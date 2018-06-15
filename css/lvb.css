@@ -127,9 +127,6 @@ body {
 }
 
 @media (max-width: 480px) {
-    .row.Aligner-a {
-        display: block; /* Turn off the flexible box layout */
-    }
     .home-article-gameList {
         height: 95vh;
     }
