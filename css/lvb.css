@@ -116,13 +116,13 @@ body {
         display: block; /* Turn off the flexible box layout */
     }
     .home-article-gameList {
-        height: 95vh;
+        height: 100vh;
     }
     .diceGame-article {
-        height: 90vh;
+        height: 140vh;
     }
     .getFreeNas-article {
-        height: 105vh;
+        height: 130vh;
     }
 }
 
@@ -131,15 +131,12 @@ body {
         height: 90vh;
     }
     .diceGame-article {
-        height: 90vh;
+        height: 110vh;
     }
     .getFreeNas-article {
-        height: 105vh;
+        height: 110vh;
     }
 }
-
-
-
 .text {
     width: auto;
     height: 30vh;
