@@ -216,7 +216,7 @@
         var nebPay = new NebPay();
         var serialNumber
         var intervalQuery
-        var contract_address = "n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk";
+        var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp";
 
         if (typeof (webExtensionWallet) === "undefined") {
             alert("請先安裝星雲插件https://github.com/nebulasio/WebExtensionWallet");
@@ -255,7 +255,7 @@
         
         function onClickGetBonus() {
             nebPay.simulateCall(contract_address, "0", "getBonus", "", {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 listener: onGetBonus
             });
         }
@@ -270,7 +270,7 @@
         
         function onClickGetBankAmount() {
             nebPay.simulateCall(contract_address, "0", "getBankAmount", "", {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 listener: onGetBankAmount
             });
         }
@@ -285,7 +285,7 @@
         
         function onClickGetNumber() {
             nebPay.simulateCall(contract_address, 0, "getNumber", JSON.stringify([window.location.search.substr(1)]), {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 listener: onGetNumber
             });
         }
@@ -373,7 +373,7 @@
             var callFunction = "bid";
             var callArgs = "";
             var options = {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 //listener: onBid
             }
 
