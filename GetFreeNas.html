@@ -144,7 +144,7 @@
             alert("請先安裝星雲插件");
         }
         
-        var contract_address = "n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk";
+        var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp";
         
         $(function() {
             onClickGetDonatePoolAmount();
@@ -152,7 +152,7 @@
         
         function onClickGetDonatePoolAmount() {
             nebPay.simulateCall(contract_address, 0, "getDonatePoolAmount", "", {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 listener: onGetDonatePoolAmount
             });
         }
@@ -169,7 +169,7 @@
             showStatus("請確保距離上次領取已超過十分鐘, 否則交易將失敗");
             $("#close").hide();
             serialNumber = nebPay.call(contract_address, "0", "claim", "", {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 //listener: onClaim
             })
             intervalQuery = setInterval(function() {
@@ -179,7 +179,7 @@
         
         function funcIntervalQuery_a() {
             var options = {
-                callback: NebPay.config.testnetUrl
+                callback: NebPay.config.mainnetUrl
             }
             nebPay.queryPayInfo(serialNumber,options)   //search transaction result from server (result upload to server by app)
                 .then(function (resp) {
@@ -213,7 +213,7 @@
             var callFunction = "donate";
             var callArgs = "";
             var options = {
-                callback: NebPay.config.testnetUrl,
+                callback: NebPay.config.mainnetUrl,
                 //listener: onBid
             }
 
@@ -226,7 +226,7 @@
         
         function funcIntervalQuery() {
             var options = {
-                callback: NebPay.config.testnetUrl
+                callback: NebPay.config.mainnetUrl
             }
             nebPay.queryPayInfo(serialNumber,options)   //search transaction result from server (result upload to server by app)
                 .then(function (resp) {
