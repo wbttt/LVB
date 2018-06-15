@@ -126,6 +126,23 @@ body {
     }
 }
 
+@media (max-width: 480px) {
+    .row.Aligner-a {
+        display: block; /* Turn off the flexible box layout */
+    }
+    .home-article-gameList {
+        height: 95vh;
+    }
+    .diceGame-article {
+        height: 90vh;
+    }
+    .getFreeNas-article {
+        height: 105vh;
+    }
+}
+
+
+
 .text {
     width: auto;
     height: 30vh;
