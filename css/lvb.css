@@ -111,7 +111,7 @@ body {
 .Aligner-item {
   max-width: 100%;
 }
-@media (max-width: 415px) {
+@media (max-width: 768px) {
     .row.Aligner-a {
         display: block; /* Turn off the flexible box layout */
     }
