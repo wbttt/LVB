@@ -264,7 +264,7 @@
         $("#QQ").hide();
         
         function onClickGetBonus() {
-            // $("#search_value").val() 搜索框内的值
+
             var from = Account.NewAccount().getAddressString();
             var value = "0";
             var nonce = "0"
@@ -293,10 +293,24 @@
         }
         
         function onClickGetBankAmount() {
-            nebPay.simulateCall(contract_address, "0", "getBankAmount", "", {
-                callback: callbackUrl,
-                listener: onGetBankAmount
-            });
+
+            var from = Account.NewAccount().getAddressString();
+            var value = "0";
+            var nonce = "0"
+            var gas_price = "1000000"
+            var gas_limit = "2000000"
+            var callFunction = "getBankAmount";
+            var arg = ""
+            var callArgs = JSON.stringify([arg]); 
+            var contract = {
+                "function": callFunction,
+                "args": callArgs
+            }
+            neb.api.call(from,contract_address,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+                onGetBankAmount(resp)
+            }).catch(function (err) {
+                console.log("error:" + err.message)
+            })
         }
         
         function onGetBankAmount(resp) {
