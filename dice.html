@@ -219,15 +219,19 @@
         var serialNumber
         var intervalQuery
         
-        var callbackUrl = NebPay.config.mainnetUrl; 
+        //TEST : NebPay.config.testnetUrl; MAIN : NebPay.config.mainnetUrl;
+        var callbackUrl =  NebPay.config.mainnetUrl; 
+        
+        //TEST : n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk; MAIN : n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp;
         var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp"; 
-        //TEST:n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk MAIN:n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp
         
         var nebulas = require("nebulas"),
         Account = nebulas.Account,
         neb = new nebulas.Neb();
         
+        //主網,測試網切換記得改!
         neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+        
         if (typeof (webExtensionWallet) === "undefined") {
             alert("請先安裝星雲插件https://github.com/nebulasio/WebExtensionWallet");
         }
@@ -322,10 +326,23 @@
         }
         
         function onClickGetNumber() {
-            nebPay.simulateCall(contract_address, 0, "getNumber", JSON.stringify([window.location.search.substr(1)]), {
-                callback: callbackUrl,
-                listener: onGetNumber
-            });
+
+            var from = Account.NewAccount().getAddressString();
+            var value = "0";
+            var nonce = "0"
+            var gas_price = "1000000"
+            var gas_limit = "2000000"
+            var callFunction = "getNumber";
+            var callArgs = JSON.stringify([window.location.search.substr(1)]); 
+            var contract = {
+                "function": callFunction,
+                "args": callArgs
+            }
+            neb.api.call(from,contract_address,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+                onGetNumber(resp)
+            }).catch(function (err) {
+                console.log("error:" + err.message)
+            })
         }
         
         function onGetNumber(resp) {
