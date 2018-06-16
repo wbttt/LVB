@@ -11,6 +11,7 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src=nebPay.js></script>
+    <script src=nebulas.js></script>
   </head>
     
   <body>
@@ -87,7 +88,7 @@
                         <p class="font-size-3vmin">
                             <P>歡迎新手用戶申請Gas,可用在"CLAIM"交易的礦工費。</P>
                             <P>請加入
-                                <a href="https://t.me/LasVegasInBlockchain"><i class="fab fa-telegram"></i>電報群</a>
+                                <a href="https://t.me/LasVegasInBlockchain"><i class="fab fa-telegram"></i>電報</a>
                                 或
                                 <a href="https://line.me/ti/p/UExvoy8PdM"><i class="fab fa-line"></i>line</a>
                                 申請。
@@ -137,24 +138,48 @@
         var serialNumber
         var intervalQuery
         
-
+        //TEST : NebPay.config.testnetUrl; MAIN : NebPay.config.mainnetUrl;
+        var callbackUrl = NebPay.config.mainnetUrl; 
+        //TEST : n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk; MAIN : n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp;
+        var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp"; 
+        
+        
+        var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+        
+        //主網測試網記得改!!
+        neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+        
         //to check if the extension is installed
         //if the extension is installed, var "webExtensionWallet" will be injected in to web page
         if (typeof (webExtensionWallet) === "undefined") {
             alert("請先安裝星雲插件");
         }
         
-        var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp";
-        
         $(function() {
             onClickGetDonatePoolAmount();
         })
         
         function onClickGetDonatePoolAmount() {
-            nebPay.simulateCall(contract_address, 0, "getDonatePoolAmount", "", {
-                callback: NebPay.config.mainnetUrl,
-                listener: onGetDonatePoolAmount
-            });
+
+            var from = Account.NewAccount().getAddressString();
+            var value = "0";
+            var nonce = "0"
+            var gas_price = "1000000"
+            var gas_limit = "2000000"
+            var callFunction = "getDonatePoolAmount";
+            var arg = ""
+            var callArgs = JSON.stringify([arg]); 
+            var contract = {
+                "function": callFunction,
+                "args": callArgs
+            }
+            neb.api.call(from,contract_address,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+                onGetDonatePoolAmount(resp)
+            }).catch(function (err) {
+                console.log("error:" + err.message)
+            })
         }
         
         function onGetDonatePoolAmount(resp) {
@@ -169,7 +194,7 @@
             showStatus("請確保距離上次領取已超過十分鐘, 否則交易將失敗");
             $("#close").hide();
             serialNumber = nebPay.call(contract_address, "0", "claim", "", {
-                callback: NebPay.config.mainnetUrl,
+                callback: callbackUrl,
                 //listener: onClaim
             })
             intervalQuery = setInterval(function() {
@@ -179,7 +204,7 @@
         
         function funcIntervalQuery_a() {
             var options = {
-                callback: NebPay.config.mainnetUrl
+                callback: callbackUrl
             }
             nebPay.queryPayInfo(serialNumber,options)   //search transaction result from server (result upload to server by app)
                 .then(function (resp) {
@@ -213,10 +238,9 @@
             var callFunction = "donate";
             var callArgs = "";
             var options = {
-                callback: NebPay.config.mainnetUrl,
+                callback: callbackUrl,
                 //listener: onBid
             }
-
             serialNumber = nebPay.call(to, value, callFunction, callArgs, options);
             
             intervalQuery = setInterval(function() {
@@ -226,7 +250,7 @@
         
         function funcIntervalQuery() {
             var options = {
-                callback: NebPay.config.mainnetUrl
+                callback: callbackUrl
             }
             nebPay.queryPayInfo(serialNumber,options)   //search transaction result from server (result upload to server by app)
                 .then(function (resp) {
