@@ -219,15 +219,15 @@
         var serialNumber
         var intervalQuery
         
-        var callbackUrl = NebPay.config.testnetUrl; 
-        var contract_address = "n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk"; 
+        var callbackUrl = NebPay.config.mainnetUrl; 
+        var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp"; 
         //TEST:n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk MAIN:n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp
         
         var nebulas = require("nebulas"),
         Account = nebulas.Account,
         neb = new nebulas.Neb();
         
-        neb.setRequest(new nebulas.HttpRequest("https://testnet.nebulas.io"));
+        neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
         if (typeof (webExtensionWallet) === "undefined") {
             alert("請先安裝星雲插件https://github.com/nebulasio/WebExtensionWallet");
         }
