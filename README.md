@@ -3,3 +3,6 @@
 <br>
 <br>
 Demo: https://wbttt.github.io/LVB/
+<br>
+<br>
+智能合約: https://explorer.nebulas.io/#/address/n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp
