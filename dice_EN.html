@@ -1,1 +1,500 @@
+<!DOCTYPE html>
+<html>
+    
+  <head>
+    <meta charset="utf-8">
+    <title>DICE | LVB - Las Vegas In Blockchain</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/lvb.css" rel="stylesheet">
+    <link href="css/fontawesome-all.css" rel="stylesheet">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src=nebPay.js></script>
+    <script src=nebulas.js></script>
+  </head>
+    
+  <body>
+      <div class="container">
+        <nav class="nav navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                </button>
+                <a class="navbar-brand" href="index.html"><i class="fas fa-dollar-sign font-size-6vmin"></i>&nbsp;<span class="font-size-6vmin"><strong>LVB</strong></span></a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="index_EN.html">Home</a></li>
+                    <li><a href="about_EN.html">About</a></li>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Games<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="dice_EN.html"><i class="fas fa-dice" style="color: dimgray"></i>&nbsp;&nbsp;Dice</a></li>
+                            <li><a href="#">&nbsp;<i class="fas fa-chess-knight" style="color: dimgray"></i>&nbsp;&nbsp;Developing...</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="GetFreeNas.html">Get Free NAS</a></li>
+                    <li><a href="https://explorer.nebulas.io/#/address/n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp">smart contract</a></li>
+                    <li><a href="dice.html">中</a></li>
+                </ul>
+            </div>
+        </div>
+        </nav> 
+        <div class="row diceGame-article text-center Aligner-a">
+            <div class="col-md-6 col-xs-12">
+                <br><br>
+                <i class="fas fa-dice grey font-size-45vmin" ></i>
+                <br><br><br>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div>
+                    <span class="font-size-7vmin grey medium">Bonus:</span>
+                    <span id=get_bonus class="font-size-7vmin grey medium">&nbsp;<i class="fas fa-spinner fa-pulse font-size-7vmin"></i>&nbsp;</span>
+                    <span class="font-size-7vmin grey medium">NAS</span>
+                </div>
+                <br><br>
+                <div>
+                    <button type="button" class="btn btn-default btn-lg" id="request_number" onclick="javascript: onClickBid()">
+                        <span class="font-size-7vmin grey medium">PLAY</span>
+                    </button>
+                    <p class="font-size-2vmin ligth-grey regular">( 0.01NAS / once )</p>
+                </div>
+                <br>
+                <div>
+                    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">
+                        <span class="font-size-3vmin grey medium">Game rule / prize</span>
+                    </button>
+                </div>
+                <br>
+                <div>
+                    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#bankModal" onclick="javascript: onClickGetBankAmount()">
+                        <span class="font-size-3vmin grey medium">Bookmaker&nbsp;chips</span>
+                    </button>
+                </div>
+                
 
+            </div>
+        </div>
+        
+        <!--遊戲玩法 modal-->  
+        
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title black medium font-size-4vmin" id="myModalLabel "><strong>Game&nbsp;rule&nbsp;/&nbsp;prize</strong></h4>
+                    </div>
+                    <div class="modal-body"><strong>
+                        <p class="font-size-3vmin">Game rule:</p>
+                        <P>Click the play button and confirm the transaction.</P>
+                        <br>
+                        <p class="font-size-3vmin">Prize:</p>
+                        <p>Top prize:&nbsp;Roll three 6,&nbsp;u won 20 times of the wager and all of the extra bonus.</p>
+                        <p>Secon prize:&nbsp;Roll three same number,&nbsp;u won 5 times of the wager.</p>
+                        <p>Third prize:&nbsp;Roll two same number,&nbsp;u won 1.5 times of the wager.</p>
+                        <br>
+                        <P class="font-size-3vmin">&lt;&nbsp;Note&nbsp;&gt;</P>
+                        <P>the NAS per bet is divided into three parts:</P>
+                        <p>10%charity&nbsp;fund,&nbsp;10%BONUS,&nbsp;80%Bookmaker&nbsp;chips.</p>
+                        <br>
+                        <p>When Bookmaker&nbsp;chips > 1 NAS,</p>
+                        <p>smar contract will evenly transfer 20% of the Bookmaker&nbsp;chips to charity&nbsp;fund and BONUS.</p>    
+                    </strong></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
+                    </div>
+                </div>
+            </div>
+      </div>
+      
+      <div class="modal fade" tabindex="-1" id="statusModal">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <p class="font-size-3vmin black medium" id="message"></p><i class="fas fa-dice fa-spin font-size-3vmin black"></i>
+                </div>
+                <div class="modal-footer" id="close">
+                    <button type="button" class="btn btn-default black medium" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+       </div>
+    
+        <!-- result modal -->
+          
+       <div class="modal fade" tabindex="-1" id="resultModal">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <p class="font-size-4vmin black medium">Result</p>       
+                </div>
+                <div class="modal-body text-center">
+                            <div>
+                                <i class="fas fa-dice-one font-size-20vmin" id="dice11"></i>
+                                <i class="fas fa-dice-two font-size-20vmin" id="dice12"></i>
+                                <i class="fas fa-dice-three font-size-20vmin" id="dice13"></i>
+                                <i class="fas fa-dice-four font-size-20vmin" id="dice14"></i>
+                                <i class="fas fa-dice-five font-size-20vmin" id="dice15"></i>
+                                <i class="fas fa-dice-six font-size-20vmin" id="dice16"></i>
+                            
+                                <i class="fas fa-dice-one font-size-20vmin" id="dice21"></i>
+                                <i class="fas fa-dice-two font-size-20vmin" id="dice22"></i>
+                                <i class="fas fa-dice-three font-size-20vmin" id="dice23"></i>
+                                <i class="fas fa-dice-four font-size-20vmin" id="dice24"></i>
+                                <i class="fas fa-dice-five font-size-20vmin" id="dice25"></i>
+                                <i class="fas fa-dice-six font-size-20vmin" id="dice26"></i>
+                            
+                                <i class="fas fa-dice-one font-size-20vmin" id="dice31"></i>
+                                <i class="fas fa-dice-two font-size-20vmin" id="dice32"></i>
+                                <i class="fas fa-dice-three font-size-20vmin" id="dice33"></i>
+                                <i class="fas fa-dice-four font-size-20vmin" id="dice34"></i>
+                                <i class="fas fa-dice-five font-size-20vmin" id="dice35"></i>
+                                <i class="fas fa-dice-six font-size-20vmin" id="dice36"></i>
+                            </div>
+                            <br>
+                            <div>
+                                <p id="prize1" class="black medium"><strong>Congratulations, u won the First Prize, NAS had been transfered to  your wallet.</strong></p>
+                                <p id="prize2" class="black medium"><strong>Congratulations, u won the Second Prize, NAS had been transfered to  your wallet.</strong></p>
+                                <p id="prize3" class="black medium"><strong>Congratulations, u won the Third Prize, NAS had been transfered to  your wallet.</strong></p>
+                                <p id="QQ" class="black medium"><strong>You nearly won the prize, giving yourself a chance to roll again!</strong></p>
+                            </div>
+                            
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default grey medium" onclick="javascript:window.location.reload()">Refresh</button>
+                    <button type="button" class="btn btn-default grey medium" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+       </div>
+            
+        <!-- bank modal -->
+            
+        <div class="modal fade" tabindex="-1" id="bankModal">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <p class="font-size-4vmin black medium">Bookmaker&nbsp;chips</p>       
+                </div>
+                <div class="modal-body text-center">
+                            <div>
+                                <span id=get_BankAmount class="font-size-7vmin black medium"></span>
+                                <span class="font-size-7vmin black medium">NAS</span>
+                            </div>
+                            <br>
+                            <div><strong>
+                                <p class="font-size-2vmin grey regular">*&nbsp;When Bookmaker&nbsp;chips > 1 NAS,</p>
+                                <p class="font-size-2vmin grey regular">smar contract will evenly transfer 20% of the Bookmaker&nbsp;chips to charity&nbsp;fund and BONUS.</p>
+                            </strong></div>
+                            
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+       </div>
+       
+      </div>
+      <footer class="footer text-center">
+        <div class="container">
+            <br>
+            <p class="font-size-2vmin">Don't charge any fees on this Dapp, just for charity.</p>
+            <p class="font-size-2vmin">
+                contact us&nbsp;
+                <a href="https://t.me/LasVegasInBlockchain" style="color: floralwhite;"><i class="fab fa-telegram" class="contact"></i>&nbsp;telegram</a>&nbsp;
+                <a href="https://line.me/ti/p/UExvoy8PdM" style="color: floralwhite;"><i class="fab fa-line"></i>&nbsp;line</a>&nbsp;
+                <a href="mailto:daniel850227@gmail.com" style="color: floralwhite;"><i class="fas fa-envelope-square"></i>&nbsp;email</a>
+            </p>
+            <p class="font-size-2vmin">Powered by NEBULAS</p>
+            <div class="font-size-2vmin">Copyright © 2018 LVB</div>
+            <br>
+        </div>
+    </footer>
+       
+      
+    <script>
+        
+        "use strict";
+        
+        var NebPay = require("nebpay");
+        var nebPay = new NebPay();
+        var serialNumber
+        var intervalQuery
+        
+        //TEST : NebPay.config.testnetUrl; MAIN : NebPay.config.mainnetUrl;
+        var callbackUrl =  NebPay.config.mainnetUrl; 
+        
+        //TEST : n1hbwgvrDJsKQ28ik1pdkwfQWQX8UkdNyXk; MAIN : n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp;
+        var contract_address = "n1gBggk4BVduVVybypRf9hWg8k1z2gXVVFp"; 
+        
+        var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+        
+        //主網,測試網切換記得改!
+        neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+        
+        if (typeof (webExtensionWallet) === "undefined") {
+            alert("請先安裝星雲插件https://github.com/nebulasio/WebExtensionWallet");
+        }
+        
+        $(function() {
+            onClickGetBonus();
+        })
+        
+        $("#close").hide();
+        $("#dice11").hide();
+        $("#dice12").hide();
+        $("#dice13").hide();
+        $("#dice14").hide();
+        $("#dice15").hide();
+        $("#dice16").hide();
+        
+        $("#dice21").hide();
+        $("#dice22").hide();
+        $("#dice23").hide();
+        $("#dice24").hide();
+        $("#dice25").hide();
+        $("#dice26").hide();
+        
+        $("#dice31").hide();
+        $("#dice32").hide();
+        $("#dice33").hide();
+        $("#dice34").hide();
+        $("#dice35").hide();
+        $("#dice36").hide();
+        
+        $("#prize1").hide();
+        $("#prize2").hide();
+        $("#prize3").hide();
+        $("#QQ").hide();
+        
+        function onClickGetBonus() {
+            var from = Account.NewAccount().getAddressString();
+            var value = "0";
+            var nonce = "0"
+            var gas_price = "1000000"
+            var gas_limit = "2000000"
+            var callFunction = "getBonus";
+            var arg = ""
+            var callArgs = JSON.stringify([arg]); 
+            var contract = {
+                "function": callFunction,
+                "args": callArgs
+            }
+            neb.api.call(from,contract_address,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+                onGetBonus(resp)
+            }).catch(function (err) {
+                console.log("error:" + err.message)
+            })
+        }
+        
+        function onGetBonus(resp) {
+            var response = JSON.parse(resp.result);
+            var number = response.toFixed(3);
+            if(number) {
+                $("#get_bonus").text(number);
+            }
+        }
+        
+        function onClickGetBankAmount() {
+            var from = Account.NewAccount().getAddressString();
+            var value = "0";
+            var nonce = "0"
+            var gas_price = "1000000"
+            var gas_limit = "2000000"
+            var callFunction = "getBankAmount";
+            var arg = ""
+            var callArgs = JSON.stringify([arg]); 
+            var contract = {
+                "function": callFunction,
+                "args": callArgs
+            }
+            neb.api.call(from,contract_address,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+                onGetBankAmount(resp)
+            }).catch(function (err) {
+                console.log("error:" + err.message)
+            })
+        }
+        
+        function onGetBankAmount(resp) {
+            var response = JSON.parse(resp.result);
+            var number = response.toFixed(3);
+            if(number) {
+                $("#get_BankAmount").text(number);
+            }
+        }
+        
+        function onClickGetNumber() {
+            var from = Account.NewAccount().getAddressString();
+            var value = "0";
+            var nonce = "0"
+            var gas_price = "1000000"
+            var gas_limit = "2000000"
+            var callFunction = "getNumber";
+            var callArgs = JSON.stringify([window.location.search.substr(1)]); 
+            var contract = {
+                "function": callFunction,
+                "args": callArgs
+            }
+            neb.api.call(from,contract_address,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+                onGetNumber(resp)
+            }).catch(function (err) {
+                console.log("error:" + err.message)
+            })
+        }
+        
+        function onGetNumber(resp) {
+            var response = JSON.parse(resp.result);
+            if(response) {
+                if(response.dice1===1) {
+                    $("#dice11").show();
+                }
+                else if(response.dice1===2) {
+                    $("#dice12").show();
+                }
+                else if(response.dice1===3) {
+                    $("#dice13").show();
+                }
+                else if(response.dice1===4) {
+                    $("#dice14").show();
+                }
+                else if(response.dice1===5) {
+                    $("#dice15").show();
+                }
+                else if(response.dice1===6) {
+                    $("#dice16").show();
+                }
+                
+                if(response.dice2===1) {
+                    $("#dice21").show();
+                }
+                else if(response.dice2===2) {
+                    $("#dice22").show();
+                }
+                else if(response.dice2===3) {
+                    $("#dice23").show();
+                }
+                else if(response.dice2===4) {
+                    $("#dice24").show();
+                }
+                else if(response.dice2===5) {
+                    $("#dice25").show();
+                }
+                else if(response.dice2===6) {  
+                    $("#dice26").show();
+                }
+        
+                if(response.dice3===1) {
+                    $("#dice31").show();
+                }
+                else if(response.dice3===2) {
+                    $("#dice32").show();
+                }
+                else if(response.dice3===3) {
+                    $("#dice33").show();
+                }
+                else if(response.dice3===4) {
+                    $("#dice34").show();
+                }
+                else if(response.dice3===5) {
+                    $("#dice35").show();
+                }
+                else if(response.dice3===6) {
+                    $("#dice36").show();
+                }
+                
+                if( (response.dice1===response.dice2) && (response.dice1===response.dice3) && (response.dice1===6) ) {
+                    $("#prize1").show();
+                }
+                else if( (response.dice1===response.dice2) && (response.dice1===response.dice3) && (response.dice1!==6) ) {
+                    $("#prize2").show();
+                }
+                else if( (response.dice1===response.dice2) || (response.dice1===response.dice3) || (response.dice2===response.dice3) ) {
+                    $("#prize3").show();
+                }
+                else {
+                    $("#QQ").show();
+                }
+            }
+        }
+        
+        function onClickBid() {
+            showStatus("請在NAS錢包生成交易並確認");
+            $("#close").hide();
+            var to = contract_address;
+            var value = "0.01";
+            var callFunction = "bid";
+            var callArgs = "";
+            var options = {
+                callback: callbackUrl,
+                //listener: onBid
+            }
+            serialNumber = nebPay.call(to, value, callFunction, callArgs, options);
+            
+            intervalQuery = setInterval(function() {
+                funcIntervalQuery();
+            }, 2000);
+        };
+        
+        //function onBid(resp) {
+          //  window.location = location.protocol + '//' + location.host +location.pathname + '?' + resp.txhash;
+        //}
+        
+    
+    
+        function funcIntervalQuery() {
+            var options = {
+                callback: callbackUrl
+            }
+            nebPay.queryPayInfo(serialNumber,options)   //search transaction result from server (result upload to server by app)
+                .then(function (resp) {
+                    console.log("tx result: " + resp) //resp is a JSON string
+                    var respObject = JSON.parse(resp)
+                    if(respObject.code === 0 && respObject.data.status === 2){
+                        showStatus("交易上鏈...擲骰中...");
+                        $("#close").hide();
+                    }
+                    else if(respObject.code === 0 && respObject.data.status === 1) {
+                        clearInterval(intervalQuery);
+                        window.location = location.protocol + '//' + location.host +location.pathname + '?' + respObject.data.hash;
+                    }
+                    else if(respObject.code === 0 && respObject.data.status === 0) {
+                        clearInterval(intervalQuery);
+                        showStatus("上鏈失敗, 請重試");
+                        $("#close").show();
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+        }
+        
+        function showStatus(message) {
+            $('#statusModal').modal({backdrop: 'static', keyboard: false});
+            $("#message").text(message);
+            $("#statusModal").modal('show');
+        }
+        
+        function closeStatus() {
+            $("#statusModal").modal('hide');
+        }
+        
+        function showResult() {
+            $('#resultModal').modal({backdrop: 'static', keyboard: false});
+            $("#resultModal").modal('show');
+        }
+        
+        if(window.location.search) {
+          showResult();
+          onClickGetNumber();
+        }
+        
+    </script>
+  </body>
+    
+</html>
