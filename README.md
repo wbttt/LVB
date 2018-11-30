@@ -1,5 +1,5 @@
 # Decentralized gaming combined with charity systems
-去中心化博弈結合公益系統Dapp
+去中心化博弈結合公益系統 Dapp
 <br>
 <br>
 Website: https://wbttt.github.io/LVB/
